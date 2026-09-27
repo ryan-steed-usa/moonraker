@@ -147,6 +147,8 @@ class PrimaryRouter(MutableRouter):
     def find_handler(
         self, request: HTTPServerRequest, **kwargs: Any
     ) -> Optional[HTTPMessageDelegate]:
+        if request.path.startswith("//"):
+            request.path = f"/{request.path.lstrip("/")}"
         hdlr = super().find_handler(request, **kwargs)
         if hdlr is not None:
             return hdlr
